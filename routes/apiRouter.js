@@ -61,7 +61,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
     })(req, res, next);
 });
 
-// get /api/user/login
+// get /api/user/logout
 router.get('/logout', isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();
