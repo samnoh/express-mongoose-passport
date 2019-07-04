@@ -12,7 +12,10 @@ router.get('/', isLoggedIn, (req, res) => {
 
 // POST /api/user/register
 router.post('/register', isNotLoggedIn, async (req, res, next) => {
-    console.log('hi');
+    if (req.body.password.length < 8) {
+        return res.send('too short');
+    }
+
     try {
         console.log(req.body);
         const exUser = await User.findOne({ userId: req.body.userId });
