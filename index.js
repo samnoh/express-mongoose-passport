@@ -53,7 +53,7 @@ app.use(
             httpOnly: true,
             secure: prod
         },
-        name: 'rnbck'
+        name: 'mynextjsapp'
     })
 );
 app.use(passport.initialize());
