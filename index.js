@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(expressSession);
 const passport = require('passport');
 const hpp = require('hpp');
 const helmet = require('helmet');
@@ -53,7 +54,14 @@ app.use(
             httpOnly: true,
             secure: prod
         },
-        name: 'mynextjsapp'
+        name: 'mynextjsapp',
+        store: new MongoDBStore({
+            uri: `mongodb://${process.env.MONGO_ID}:${
+                process.env.MONGO_PASSWORD
+            }@localhost:27017/admin`,
+            databaseName: 'nextjsback',
+            collection: 'sessions'
+        })
     })
 );
 app.use(passport.initialize());
