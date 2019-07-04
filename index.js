@@ -26,21 +26,23 @@ if (prod) {
     app.use(morgan('combined'));
     app.use(
         cors({
-            origin: '*'
+            origin: '*',
+            credentials: true
         })
     );
 } else {
     app.use(morgan('dev'));
     app.use(
         cors({
-            origin: true
+            origin: true,
+            credentials: true
         })
     );
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
     expressSession({
@@ -50,7 +52,8 @@ app.use(
         cookie: {
             httpOnly: true,
             secure: prod
-        }
+        },
+        name: 'rnbck'
     })
 );
 app.use(passport.initialize());
