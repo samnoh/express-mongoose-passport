@@ -10,6 +10,6 @@ exports.isNotLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         next();
     } else {
-        res.status(401).send('You cannot access');
+        res.status(401).send('You have already signed in');
     }
 };

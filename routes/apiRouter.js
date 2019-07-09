@@ -8,14 +8,17 @@ const router = express.Router();
 // GET /api/user
 router.get('/', isLoggedIn, (req, res) => {
     const user = Object.assign({}, req.user.toJSON());
+
     delete user.password;
+    delete user.__v;
+
     return res.json(user);
 });
 
 // POST /api/user/register
 router.post('/register', isNotLoggedIn, async (req, res, next) => {
     if (req.body.password.length < 8) {
-        return res.send('too short');
+        return res.status(403).send('too short');
     }
 
     try {
@@ -42,7 +45,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             return next(authError);
         }
 
-        if (info) {
+        if (!user) {
             return res.status(401).send(info.message);
         }
 
@@ -63,7 +66,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 });
 
 // GET /api/user/logout
-router.post('/logout', isLoggedIn, (req, res) => {
+router.get('/logout', isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();
     res.redirect('/');
